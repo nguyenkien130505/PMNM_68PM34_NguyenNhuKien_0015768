@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /
+Options -Indexes
+
+# Tránh rewrite lại index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+# Chuyển hướng về index.php và gán giá trị vào biến url
+RewriteRule ^(.*)$ index.php?url=$1 [L]
