@@ -1,12 +1,15 @@
 <?php
-class sinhvien {
+require_once '../app/core/controller.php';
+class sinhvien extends Controller {
     public function index() {
-        //trả về view
-        require_once '../app/views/sinhvien/index.php';
+        $model = $this->model('sinhvienModel');
+        $sinhviens = $model->getAllSinhVien();
+        $data['sinhviens'] = $sinhviens;
+        $this->view('sinhvien/index', $data);
     }
     public function create() {
         //trả về create
-        require_once '../app/views/sinhvien/create.php';
+        $this->view('sinhvien/create');
     }
 }
 ?>
