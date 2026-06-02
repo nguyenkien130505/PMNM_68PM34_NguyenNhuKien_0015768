@@ -5,11 +5,16 @@ class sinhvien extends Controller {
         $model = $this->model('sinhvienModel');
         $sinhviens = $model->getAllSinhVien();
         $data['sinhviens'] = $sinhviens;
-        $this->view('sinhvien/index', $data);
+        $data['contentview'] = 'sinhvien/index';
+        $this->view('layout/masterlayout', $data);
     }
     public function create() {
-        //trả về create
-        $this->view('sinhvien/create');
+        $data['contentview'] = 'sinhvien/create';
+        $this->view('layout/masterlayout', $data);
+    }
+    public function store() {
+        $model = $this->model('sinhvienModel');
+        $model->store();
     }
 }
-?>
+?> 
