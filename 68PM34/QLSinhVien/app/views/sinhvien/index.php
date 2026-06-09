@@ -1,9 +1,3 @@
-<?php 
-    // Khai báo giá trị mặc định nếu biến $limit chưa tồn tại
-    if (!isset($limit)) {
-        $limit = 5;
-    }
-?>
 <h1>Sinh viên</h1>
 
 <form method="GET" style="margin-bottom: 15px;">
