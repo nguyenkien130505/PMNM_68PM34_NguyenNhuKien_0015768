@@ -1,9 +1,12 @@
 <?php
-class home
+require_once '../app/core/controller.php';
+
+class home extends Controller
 {
     public function index()
     {
-        require_once '../app/views/home/index.php';
+        $data['contentview'] = 'home/index';
+        $this->view('layout/masterlayout', $data);
     }
     public function login()
     {

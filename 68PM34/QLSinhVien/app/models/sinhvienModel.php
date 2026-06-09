@@ -60,5 +60,28 @@ class sinhvienModel {
         ];
     }
 
+    // ==========================================
+    // PHẦN THÊM MỚI CHO CHỨC NĂNG SỬA & XÓA
+    // ==========================================
+
+    // 1. Lấy thông tin 1 sinh viên theo ID để đổ ra form sửa
+    public function getSinhVienById($id) {
+        $query = "SELECT * FROM tbl_sinhviens WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // 2. Cập nhật dữ liệu vào DB
+    public function updateSinhVien($data) {
+        $query = "UPDATE tbl_sinhviens SET hoten = :hoten, gioitinh = :gioitinh, mssv = :mssv WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':hoten', $data['hoten']);
+        $stmt->bindParam(':gioitinh', $data['gioitinh']);
+        $stmt->bindParam(':mssv', $data['mssv']);
+        $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 ?>

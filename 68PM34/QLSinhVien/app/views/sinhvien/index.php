@@ -64,6 +64,12 @@
     <?php endforeach; ?>
 </table>
 
+<div style="margin-top: 15px; margin-bottom: 5px; text-align: left;">
+    <a href="/sinhvien/create" style="padding: 10px 15px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 15px;">
+        + Thêm mới sinh viên
+    </a>
+</div>
+
 <div style="margin-top: 20px; text-align: center;">
     <?php 
         // Xử lý chuỗi search an toàn cho URL

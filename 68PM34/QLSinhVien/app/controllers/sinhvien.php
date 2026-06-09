@@ -63,5 +63,17 @@ class sinhvien extends Controller {
         }
     }
 
+    // 2. Hàm xử lý lưu dữ liệu Sửa (Update)
+    public function update() {
+        if (isset($_POST['id'])) {
+            $model = $this->model('sinhvienModel');
+            if ($model->updateSinhVien($_POST)) {
+                header("Location: /sinhvien/index");
+                exit();
+            } else {
+                echo "Lỗi khi cập nhật sinh viên.";
+            }
+        }
+    }
 }
 ?>
