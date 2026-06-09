@@ -83,5 +83,13 @@ class sinhvienModel {
         $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    // 3. Xóa sinh viên khỏi DB
+    public function deleteSinhVien($id) {
+        $query = "DELETE FROM tbl_sinhviens WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 ?>

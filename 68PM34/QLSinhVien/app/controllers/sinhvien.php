@@ -75,5 +75,17 @@ class sinhvien extends Controller {
             }
         }
     }
+
+    // 3. Hàm xử lý Xóa (Delete)
+    public function delete() {
+        if (isset($_GET['id'])) {
+            $id = (int)$_GET['id'];
+            $model = $this->model('sinhvienModel');
+            $model->deleteSinhVien($id);
+        }
+        // Xóa xong tự động quay về trang danh sách
+        header("Location: /sinhvien/index");
+        exit();
+    }
 }
 ?>
