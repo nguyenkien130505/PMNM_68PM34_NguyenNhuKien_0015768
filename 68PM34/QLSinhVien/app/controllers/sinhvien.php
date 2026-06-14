@@ -8,11 +8,14 @@ class sinhvien extends Controller {
         $offset = (int)($_GET['offset'] ?? 0);
         $search = trim($_GET['search'] ?? '');
         $class_filter = trim($_GET['class_filter'] ?? '');
+        $sort_by = trim($_GET['sort_by'] ?? '');
         
         $model = $this->model('sinhvienModel');
-        $result = $model->paging($limit, $offset, $search);
         $result = $model->paging($limit, $offset, $search, $class_filter, $sort_by);
         
+        $lophocModel = $this->model('lophocModel');
+        $data['lophocs'] = $lophocModel->getAllLopHoc();
+
         $data['sinhviens'] = $result['data'];
         $data['totalpage'] = $result['totalpage'];
         $data['totalrecord'] = $result['totalrecord'];
@@ -21,19 +24,40 @@ class sinhvien extends Controller {
         $data['offset'] = $offset;
         $data['search'] = $search;
         $data['class_filter'] = $class_filter;
+        $data['sort_by'] = $sort_by;
         
         $data['contentview'] = 'sinhvien/index';
         $this->view('layout/masterlayout', $data);
     }
 
     public function create() {
+        $lophocModel = $this->model('lophocModel');
+        $data['lophocs'] = $lophocModel->getAllLopHoc();
         $data['contentview'] = 'sinhvien/create';
         $this->view('layout/masterlayout', $data);
     }
 
     public function store() {
         $model = $this->model('sinhvienModel');
-        $model->store();
+        $mssv = trim($_POST['mssv'] ?? '');
+        
+        if ($model->checkMssvExists($mssv)) {
+            $lophocModel = $this->model('lophocModel');
+            $data['lophocs'] = $lophocModel->getAllLopHoc();
+            $data['contentview'] = 'sinhvien/create';
+            $data['error'] = "Mã số sinh viên '{$mssv}' đã tồn tại trong hệ thống!";
+            // Retain old values
+            $data['old_data'] = $_POST;
+            $this->view('layout/masterlayout', $data);
+            return;
+        }
+        
+        if ($model->create()) {
+            header("Location: " . BASE_URL . "sinhvien/index");
+            exit();
+        } else {
+            echo "Lỗi khi tạo sinh viên.";
+        }
     }
 
     public function paging() {
@@ -58,11 +82,13 @@ class sinhvien extends Controller {
             
             // Lấy dữ liệu sinh viên cũ truyền sang View
             $data['sinhvien'] = $model->getSinhVienById($id); 
+            $lophocModel = $this->model('lophocModel');
+            $data['lophocs'] = $lophocModel->getAllLopHoc();
             $data['contentview'] = 'sinhvien/edit'; 
             
             $this->view('layout/masterlayout', $data);
         } else {
-            header("Location: /sinhvien/index");
+            header("Location: " . BASE_URL . "sinhvien/index");
             exit();
         }
     }
@@ -71,8 +97,28 @@ class sinhvien extends Controller {
     public function update() {
         if (isset($_POST['id'])) {
             $model = $this->model('sinhvienModel');
+            $id = (int)$_POST['id'];
+            $mssv = trim($_POST['mssv'] ?? '');
+            
+            if ($model->checkMssvExists($mssv, $id)) {
+                $lophocModel = $this->model('lophocModel');
+                $data['lophocs'] = $lophocModel->getAllLopHoc();
+                $data['contentview'] = 'sinhvien/edit';
+                $data['error'] = "Mã số sinh viên '{$mssv}' đã tồn tại trong hệ thống!";
+                // Fake existing object format for the view
+                $data['sinhvien'] = [
+                    'id' => $id,
+                    'hoten' => $_POST['hoten'] ?? '',
+                    'gioitinh' => $_POST['gioitinh'] ?? '',
+                    'mssv' => $mssv,
+                    'malop' => $_POST['malop'] ?? ''
+                ];
+                $this->view('layout/masterlayout', $data);
+                return;
+            }
+
             if ($model->updateSinhVien($_POST)) {
-                header("Location: /sinhvien/index");
+                header("Location: " . BASE_URL . "sinhvien/index");
                 exit();
             } else {
                 echo "Lỗi khi cập nhật sinh viên.";
@@ -88,7 +134,7 @@ class sinhvien extends Controller {
             $model->deleteSinhVien($id);
         }
         // Xóa xong tự động quay về trang danh sách
-        header("Location: /sinhvien/index");
+        header("Location: " . BASE_URL . "sinhvien/index");
         exit();
     }
 }
