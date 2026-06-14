@@ -1,8 +1,28 @@
 <h1>Sinh viên</h1>
+        <!-- Class filter -->
+        <div class="col-6 col-md-auto">
+            <label for="class_filter"><i class="fas fa-filter me-1"></i>Lớp</label>
+            <select name="class_filter" id="class_filter" class="form-select">
+                <option value="">Tất cả lớp</option>
+                <?php if (isset($lophocs)): ?>
+                    <?php foreach($lophocs as $lop): ?>
+                        <option value="<?php echo htmlspecialchars($lop['malop']); ?>" <?php echo (isset($class_filter) && $class_filter == $lop['malop']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($lop['tenlop']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+        </div>
 
 <form method="GET" style="margin-bottom: 15px;">
     <?php if(isset($limit)): ?>
         <input type="hidden" name="limit" value="<?php echo $limit; ?>">
+        <!-- Search -->
+        <div class="col-12 col-md">
+            <label for="searchInput"><i class="fas fa-search me-1"></i>Tìm kiếm</label>
+            <?php $searchValue = isset($search) ? htmlspecialchars($search) : ''; ?>
+            <input type="text" name="search" id="searchInput" class="form-control" placeholder="Nhập tên sinh viên..." value="<?php echo $searchValue; ?>">
+        </div>
     <?php endif; ?>
     <input type="hidden" name="offset" value="0">
     

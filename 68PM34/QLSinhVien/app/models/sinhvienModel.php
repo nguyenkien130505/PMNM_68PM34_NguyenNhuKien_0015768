@@ -37,10 +37,13 @@ class sinhvienModel {
         $limit = max(1, (int)$limit);
         $offset = max(0, (int)$offset);
         
-        $query = "SELECT * FROM tbl_sinhviens WHERE hoten LIKE :search LIMIT :limit OFFSET :offset";
+        $whereClauses = ["s.hoten LIKE :search"];
+        if (!empty($class_filter)) {
+            $whereClauses[] = "s.malop = :class_filter";
         $stmt = $this->conn->prepare($query);
         $searchParam = '%' . $search . '%';
         $stmt->bindParam(':search', $searchParam, PDO::PARAM_STR);
+        if (!empty($class_filter)) {
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();

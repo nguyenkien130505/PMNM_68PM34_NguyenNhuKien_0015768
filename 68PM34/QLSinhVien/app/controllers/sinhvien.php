@@ -7,16 +7,20 @@ class sinhvien extends Controller {
         $limit = (int)($_GET['limit'] ?? 5);
         $offset = (int)($_GET['offset'] ?? 0);
         $search = trim($_GET['search'] ?? '');
+        $class_filter = trim($_GET['class_filter'] ?? '');
         
         $model = $this->model('sinhvienModel');
         $result = $model->paging($limit, $offset, $search);
+        $result = $model->paging($limit, $offset, $search, $class_filter, $sort_by);
         
         $data['sinhviens'] = $result['data'];
         $data['totalpage'] = $result['totalpage'];
         $data['totalrecord'] = $result['totalrecord'];
         $data['currentpage'] = ($offset / $limit) + 1;
         $data['limit'] = $limit;
+        $data['offset'] = $offset;
         $data['search'] = $search;
+        $data['class_filter'] = $class_filter;
         
         $data['contentview'] = 'sinhvien/index';
         $this->view('layout/masterlayout', $data);
