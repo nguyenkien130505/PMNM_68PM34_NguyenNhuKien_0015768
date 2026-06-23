@@ -106,7 +106,10 @@
         <div class="login-card">
             <i class="fas fa-graduation-cap login-icon"></i>
             <h1 class="login-title">Chào mừng trở lại</h1>
-            <p class="login-subtitle">Đăng nhập để quản lý hệ thống sinh viên</p>
+            <p class="login-subtitle" style="margin-bottom: 15px;">Đăng nhập để quản lý hệ thống sinh viên</p>
+            <div class="alert alert-info py-2" role="alert" style="font-size: 0.9rem; margin-bottom: 25px; border-radius: var(--radius-md);">
+                <i class="fas fa-info-circle me-1"></i> <strong>Username:</strong> hieulx &nbsp;|&nbsp; <strong>Pass:</strong> 123456
+            </div>
             
             <form method="POST" action="<?php echo BASE_URL ?? '/'; ?>auth/login">
                 <div class="input-group mb-3">
